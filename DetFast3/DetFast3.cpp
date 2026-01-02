@@ -206,7 +206,7 @@ int main() {
 	////2. network
 	//const int nInner = 200;
 	//const int nOuter = 1;
-	//const double alpha = 0.03;
+	//const double alpha = 0.05;
 	//const int nInnerPoints = 3;
 	//const int nOuterPoints = 30;
 
@@ -350,3 +350,4 @@ int main() {
 	double pearson = validateFunctions(inners[0], outers[0], features_validation, targets_validation);
 	printf("Pearson %f\n\n", pearson);
 }
+
