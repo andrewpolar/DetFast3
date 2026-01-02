@@ -193,7 +193,31 @@ void worker(std::vector<std::unique_ptr<Function>>& inner,
 }
 
 int main() {
-	//data
+
+	////Matrices 5 * 5
+	////1. dataset
+	//const int nTrainingRecords = 10'000'000;
+	//const int nValidationRecords = 2'000'000;
+	//const int nMatrixSize = 5;
+	//const int nFeatures = nMatrixSize * nMatrixSize;
+	//const double min = 0.0;
+	//const double max = 10.0;
+
+	////2. network
+	//const int nInner = 200;
+	//const int nOuter = 1;
+	//const double alpha = 0.03;
+	//const int nInnerPoints = 3;
+	//const int nOuterPoints = 30;
+
+	////3. batches and loops
+	//const int nBatchSize = 1'200'000;
+	//const int nBatches = 3;
+	//const int nLoops = 3;
+	/////////////////////////
+
+	//Matrices 5 * 5
+	//1. dataset
 	const int nTrainingRecords = 100'000;
 	const int nValidationRecords = 20'000;
 	const int nMatrixSize = 4;
@@ -201,19 +225,19 @@ int main() {
 	const double min = 0.0;
 	const double max = 10.0;
 
-	//model
+	//2. network
 	const int nInner = 70;
-	const int nAddends = nInner;
 	const int nOuter = 1;
 	double alpha = 0.3;
 	const int nInnerPoints = 3;
 	const int nOuterPoints = 30;
 
-	//batches
+	//3. batches and loops
 	const int nBatchSize = 39'000;
 	const int nBatches = 3;
 	const int nLoops = 3;
 
+	printf("Generating data...\n");
 	auto features_training = GenerateInput(nTrainingRecords, nFeatures, min, max);
 	auto features_validation = GenerateInput(nValidationRecords, nFeatures, min, max);
 	auto targets_training = ComputeDeterminantTarget(features_training, nMatrixSize, nTrainingRecords);
@@ -243,7 +267,7 @@ int main() {
 	printf("Pretraining started...\n");
 	std::vector<std::thread> workers;
 	for (int i = 0; i < nInner / 2; ++i) {
-		int offset = i * 32;
+		int offset = i * 2 * nFeatures;
 
 		workers.emplace_back(
 			pre_worker,
@@ -253,9 +277,9 @@ int main() {
 			std::ref(targets_training),
 			2,
 			alpha,
-			nAddends,
+			nInner,
 			offset,
-			32
+			2 * nFeatures
 		);
 	}
 	for (auto& t : workers) {
@@ -326,4 +350,3 @@ int main() {
 	double pearson = validateFunctions(inners[0], outers[0], features_validation, targets_validation);
 	printf("Pearson %f\n\n", pearson);
 }
-
