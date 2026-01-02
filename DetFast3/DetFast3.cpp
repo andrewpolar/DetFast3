@@ -216,7 +216,7 @@ int main() {
 	//const int nLoops = 3;
 	/////////////////////////
 
-	//Matrices 5 * 5
+	//Matrices 4 * 4
 	//1. dataset
 	const int nTrainingRecords = 100'000;
 	const int nValidationRecords = 20'000;
@@ -350,4 +350,5 @@ int main() {
 	double pearson = validateFunctions(inners[0], outers[0], features_validation, targets_validation);
 	printf("Pearson %f\n\n", pearson);
 }
+
 
